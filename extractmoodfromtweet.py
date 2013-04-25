@@ -14,9 +14,8 @@ if os.path.exists(out):
 os.mkdir(out)
 
 #myKey =  "EwSd72FSp9cCEVuWQVXnDO1TzU0"
-#myKey = "No5zUHJPDt7xAro9hJU4f0VR0"
-myKey = "syY1bDNr7L1b7yEYQFW9QcAUB0"
-start_url = "http://uclassify.com/browse/uClassify/Sentiment/ClassifyText?readkey=" + myKey + "&text="
+myKey = "No5zUHJPDt7xAro9hJU4f0VR0"
+start_url = "http://uclassify.com/browse/uClassify/Sentiment/ClassifyText?readkey=No5zUHJPDt7xAro9hJU4f0VR0&text="
 end_url = "&output=json&version=0.01"
 
 
@@ -26,7 +25,7 @@ def fetchMoodFromRequest(r,row):
 	pos = r['cls1']['positive']
         neg = r['cls1']['negative']
 
-	#print tweet
+	#print wordList
 	#print "pos,neg = ",pos,neg
 	mood  = None
 
@@ -35,34 +34,27 @@ def fetchMoodFromRequest(r,row):
 	
         if 0.5 <= pos < 0.75:
 		mood = 'calm'
-
-	if pos >= 0.5:
 		for word in wordList:
 			if word in extractwordlist.happy:
-				print " %s : ===========change to happy=============="%tweet
+				#print "================change to happy========================="
                 		mood = 'happy'
 			if word in extractwordlist.love:
-				print "%s : ==========change to happy love=========="%tweet
+				#print "==================change to happy love======================="
 				mood = 'happy love'
 
-        if neg >= 0.9:
+        if neg >= 0.85:
                 mood = "angry"
 
         if 0.5 < neg < 0.85:
 		mood = 'sad'
-
-	if neg >= 0.6:
 		for word in wordList:
-			'''
 			if word in extractwordlist.angry:
 				#print "========change to angry========"
         	        	mood = "angry"
-			'''
 			if word in extractwordlist.love:
-				print " %s : ==========change to sad love============="%tweet
+				#print "==========change to sad love============="
 				mood = 'sad love'
-			
-	#print '------------------------------------------------'
+	#print mood
         return mood
 
 
@@ -91,26 +83,22 @@ def main():
 			f = open(files, 'r')
 			outfile = "out" + files
 			os.chdir(out)
-			fw = open(outfile ,'a')
-			writer = csv.writer(fw)
+			#fw = open(outfile ,'a')
+			#writer = csv.writer(fw)
 			reader = csv.reader(f)
 			for row in reader:
 				text = fetchTextFromTweet(row)
 				url = start_url + text + end_url	
 		    		r = requests.get(url, auth=(myKey, myKey)).json
-		
 				mood = fetchMoodFromRequest(r,row)
 				row.append(mood)
-				#finallist.append(row)
-				#print finallist
-				writer.writerow(row)
-		'''
+				finallist.append(row)
+				#writer.writerow(row)
 		#fw = open(outfile ,'a')
                 #writer = csv.writer(fw)
 		for row in finallist:
 			writer.writerow(row)
 		#print "Next file"
-		'''
 		
 if __name__ == '__main__':
   main()		
