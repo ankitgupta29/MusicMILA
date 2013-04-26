@@ -9,14 +9,21 @@ cd = os.getcwd()
 new = cd+'/xlsfiles/'
 out  = cd + '/output/'
 
+'''
 if os.path.exists(out):
 	shutil.rmtree(out)
 os.mkdir(out)
-
+'''
 #myKey =  "EwSd72FSp9cCEVuWQVXnDO1TzU0"
-myKey = "No5zUHJPDt7xAro9hJU4f0VR0"
-start_url = "http://uclassify.com/browse/uClassify/Sentiment/ClassifyText?readkey=No5zUHJPDt7xAro9hJU4f0VR0&text="
+#myKey = "No5zUHJPDt7xAro9hJU4f0VR0"
+#myKey = "syY1bDNr7L1b7yEYQFW9QcAUB0"
+myKey = "QcRszF5c2ACDSXksuKtMHCi4NNE"
+start_url = "http://uclassify.com/browse/uClassify/Sentiment/ClassifyText?readkey=" + myKey + "&text="
 end_url = "&output=json&version=0.01"
+
+
+
+
 
 
 def fetchMoodFromRequest(r,row):
@@ -25,7 +32,7 @@ def fetchMoodFromRequest(r,row):
 	pos = r['cls1']['positive']
         neg = r['cls1']['negative']
 
-	#print wordList
+	#print tweet
 	#print "pos,neg = ",pos,neg
 	mood  = None
 
@@ -34,27 +41,34 @@ def fetchMoodFromRequest(r,row):
 	
         if 0.5 <= pos < 0.75:
 		mood = 'calm'
+
+	if pos >= 0.5:
 		for word in wordList:
 			if word in extractwordlist.happy:
-				#print "================change to happy========================="
+				#print " %s : ===========change to happy=============="%tweet
                 		mood = 'happy'
 			if word in extractwordlist.love:
-				#print "==================change to happy love======================="
-				mood = 'happy love'
+				#print "%s : ==========change to happy love=========="%tweet
+				mood = 'happylove'
 
-        if neg >= 0.85:
+        if neg >= 0.9:
                 mood = "angry"
 
         if 0.5 < neg < 0.85:
 		mood = 'sad'
+
+	if neg >= 0.6:
 		for word in wordList:
+			'''
 			if word in extractwordlist.angry:
 				#print "========change to angry========"
         	        	mood = "angry"
+			'''
 			if word in extractwordlist.love:
-				#print "==========change to sad love============="
-				mood = 'sad love'
-	#print mood
+				#print " %s : ==========change to sad love============="%tweet
+				mood = 'sadlove'
+			
+	#print '------------------------------------------------'
         return mood
 
 
@@ -83,22 +97,26 @@ def main():
 			f = open(files, 'r')
 			outfile = "out" + files
 			os.chdir(out)
-			#fw = open(outfile ,'a')
-			#writer = csv.writer(fw)
+			fw = open(outfile ,'a')
+			writer = csv.writer(fw)
 			reader = csv.reader(f)
 			for row in reader:
 				text = fetchTextFromTweet(row)
 				url = start_url + text + end_url	
 		    		r = requests.get(url, auth=(myKey, myKey)).json
+		
 				mood = fetchMoodFromRequest(r,row)
 				row.append(mood)
-				finallist.append(row)
-				#writer.writerow(row)
+				#finallist.append(row)
+				#print finallist
+				writer.writerow(row)
+		'''
 		#fw = open(outfile ,'a')
                 #writer = csv.writer(fw)
 		for row in finallist:
 			writer.writerow(row)
 		#print "Next file"
+		'''
 		
 if __name__ == '__main__':
   main()		

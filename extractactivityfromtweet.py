@@ -13,6 +13,8 @@ out  = cd + '/ActivityMoodFiles/'
 
 def fetchActivityFromTweet(row):
 	physical,mental,daily,relaxing,chilling = 0,0,0,0,0
+	print row
+	print "====================="
 	tweet = row[-2]  #fetch text at last column
         wordList = re.sub("[^\w]", " ",  tweet).split()
 	countlist = [0,0,0,0,0]
@@ -68,25 +70,30 @@ def main():
 	os.chdir(new)
 	listing =  os.listdir(new)
 	for files in listing:
+		print files
+		raw_input()
 		finallist = []
 		os.chdir(new)
 		if "~lock" not in files:
+			#content = open(files, "r").read().replace('\r\n','\n')
 			f = open(files, 'r')
 			outfile = "out" + files
 			os.chdir(out)
+			#content = open(outfile, "r").read().replace('\r\n','\n')
 			fw = open(outfile ,'a')
 			writer = csv.writer(fw)
-			reader = csv.reader(f)
+			reader = csv.reader(f,quoting=csv.QUOTE_NONE)
 			for row in reader:
-				activity = fetchActivityFromTweet(row)
-				if activity != 'Neutral':
-					'''
-					print row[-2]
-					print activity
-					print '======================'
-					'''
-					row.append(activity)
-				writer.writerow(row)
+				if row:
+					activity = fetchActivityFromTweet(row)
+					if activity != 'Neutral':
+						'''
+						print row[-2]
+						print activity
+						print '======================'
+						'''
+						row.append(activity)
+					writer.writerow(row)
 		
 if __name__ == '__main__':
   main()		

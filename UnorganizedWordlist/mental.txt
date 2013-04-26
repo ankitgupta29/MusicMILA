@@ -1,0 +1,176 @@
+
+survey, study
+       => resurvey
+
+
+report, study, written report
+       => assay
+       => case study
+       => white book, white paper
+       => blue book
+       => green paper
+       => progress report
+       => position paper
+       => medical report
+
+discipline, subject, subject area, subject field, field, field of study, study, bailiwick
+       => occultism
+       => communications, communication theory
+       => major
+       => frontier
+       => genealogy
+       => allometry
+       => bibliotics
+       => ology
+       => science, scientific discipline
+       => architecture
+       => engineering, engineering science, applied science, technology
+       => futurology, futuristics
+       => humanistic discipline, humanities, liberal arts, arts
+       => theology, divinity
+       => military science
+       => escapology
+       => graphology
+       => numerology
+       => protology
+       => theogony
+
+sketch, study
+       => design
+       => draft, rough drawing
+       => vignette
+
+cogitation, study
+       => lucubration
+
+
+reading
+       => speed-reading
+       => perusal, perusing, poring over, studying
+       => browse, browsing
+       => skim, skimming
+
+
+reading, meter reading, indication
+       => clock time, time
+       => miles per hour, mph
+
+
+reading, reading material
+       => bumf, bumph
+
+
+interpretation, reading, version
+       => reinterpretation
+       => anagoge
+
+recitation, recital, reading
+       => declamation
+                                                    
+
+cryptography, coding, secret writing, steganography
+       => encoding, encryption
+       => recoding
+       => decoding, decryption, decipherment
+       
+       cognition
+artificial
+intelligence
+thinking
+concept
+prototype
+model
+problem
+solving
+subgoals
+algorithms
+heuristics
+fixation
+reasoning
+inductive
+reasoning
+deductive
+reasoning
+decision
+making
+confirmation
+bias
+hindsight
+bias
+availability
+heuristic
+base
+rate
+fallacy
+representative
+heuristic
+mindfulness
+open
+mindedness
+creativity
+divergent
+thinking
+convergent
+thinking
+intelligence
+validity
+reliability
+standardization
+mental
+age
+MA
+intelligence
+quotient
+IQ
+normal
+distribution
+culture
+fair
+tests
+heritability
+gifted
+intellectual
+disability
+triarchic
+theory
+of
+intelligence
+language
+infinite
+generativity
+phonology
+morphology
+syntax
+semantics
+pragmatics
+cognitive
+appraisal
+coping
+cognitive
+reappraisal
+brainy
+cerebral
+clairvoyant
+deep
+heavy
+ideological
+imaginative
+immaterial
+inner
+intellective
+intellectual
+mysterious
+phrenic
+psychic
+psychical
+psychological
+rational
+reasoning
+spiritual
+subconscious
+subjective
+subliminal
+telepathic
+thinking
+thoughtful
+unreal
