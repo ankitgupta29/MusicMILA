@@ -45,7 +45,7 @@ def main():
 	while(1):
 		print "Enter The Tweet"
 		tweet = raw_input()
-		print tweet
+		print "Tweet Entered by you on GUI is : ",tweet
 		classifySong(tweet)
 		'''
 		testMV = createTestMoodFVec(tweet)

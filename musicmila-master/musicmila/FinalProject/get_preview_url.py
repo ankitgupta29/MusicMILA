@@ -72,6 +72,8 @@ def getURLFromH5(h5path):
     h5.close()
 
     # we already have the 7digital track id? way too easy!
+    print "Suggested Song URLs For you"
+    print "==========================="
     if track_7digitalid >= 0:
         preview = get_preview_from_trackid(track_7digitalid)
         if preview == '':
@@ -95,6 +97,9 @@ def getURLFrom7D(digital_id):
     h5.close()
     '''
     # we already have the 7digital track id? way too easy!
+    print "Suggested Song URLs For you"
+    print "==========================="
+
     if track_7digitalid >= 0:
         preview = get_preview_from_trackid(track_7digitalid)
         if preview == '':

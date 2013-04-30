@@ -14,15 +14,15 @@ sys.path.insert(0,new)
 
 import hdf5_utils 
 from get_preview_url import getURLFrom7D #getURLFromH5
-
+from random import choice
 
 
 featMoodList,classMoodList = init_MoodTrain()
 featActList,classActList = init_ActTrain()
-print len(featMoodList)
-print len(classMoodList)
-print len(featActList)
-print len(classActList)
+#print len(featMoodList)
+#print len(classMoodList)
+#print len(featActList)
+#print len(classActList)
 moodClassifier = OneVsRestClassifier(LinearSVC()).fit(featMoodList,classMoodList)
 print "Mood Classification done"
 actClassifier = OneVsRestClassifier(LinearSVC()).fit(featActList,classActList)
@@ -40,10 +40,11 @@ def classifySong(tweet):
         predA =  actClassifier.predict(testAV)
         mood  = mapClass2Mood(predM)
         activity = mapClass2Act(predA)
-        print "Predicted Mood: ",mapClass2Mood(predM)
-        print "Predicted Activity: ",mapClass2Act(predA)
+        #print "Predicted Mood: ",mapClass2Mood(predM)
+        #print "Predicted Activity: ",mapClass2Act(predA)
 	
-        location = 'ohio'
+        locationlist = ['ohio','california','texas','alabama','orleans']
+	location = choice(locationlist)
 	'''
          # hard coded 
         mood = "happy"
@@ -83,10 +84,10 @@ def classifySong(tweet):
 
 			if (counter>10):
 					break
-	
+		'''
 		for key in songUrlDict:
 			print key,songUrlDict[key]
-
+		'''
 		try:
    			with open('testsong.json'):
 				os.remove(webpath + 'testsong.json')

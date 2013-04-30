@@ -12,7 +12,7 @@ moodgenre = {'angry': ['metal'],'happy':['Soul and Reggae','folk','classic pop a
 
 
 os.chdir(new)
-print os.getcwd()
+#print os.getcwd()
 fa =  open('songIDActivityDict.json','r')
 fm =  open('songIDMoodDict.json','r')
 fs = open('songProperty.json','r')
@@ -74,7 +74,7 @@ def getActivityGenre(activity):
 		
 		
 def getMoodGenre(mood):
-	print trackIdMoodDict.keys()
+	#print trackIdMoodDict.keys()
         sortedlist = []
 	if not trackIdMoodDict.has_key(mood):
 		print 'Empty Mood List'
@@ -102,8 +102,14 @@ def getMoodGenre(mood):
 os.chdir(cd)
 def fetchSong(mood_input,activity_input,location_input):
 	
-	trackScoreDict = defaultdict(float)		
-	print mood_input,activity_input,location_input
+	trackScoreDict = defaultdict(float)
+	print "Predicted Mood     : ",mood_input
+	print "Predicted Activity : ",activity_input	
+	print "Your Location      : ",location_input
+	print"Location is choosen from following list as random for Testing Purpose"
+	print" ['ohio','california','texas','alabama','orleans']"
+	
+	#print mood_input,activity_input,location_input
 	locationlist = (location_input.lower()).split()
 	templist =[]
 	activitysortedlist = getActivityGenre(activity_input.lower())
