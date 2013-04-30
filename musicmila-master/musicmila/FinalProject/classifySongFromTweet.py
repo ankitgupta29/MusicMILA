@@ -72,8 +72,8 @@ def classifySong(tweet):
 			if URL is not None:
 				#print URL
 				#get the URL here
-				songUrlDict["title"] = tup[1]
-				songUrlDict['artist'] = tup[2]
+				songUrlDict["title"] = tup[2]
+				songUrlDict['artist'] = tup[1]
 				songUrlDict["mp3"] = URL
 				songUrlList.append(songUrlDict)
 				counter = counter+1
