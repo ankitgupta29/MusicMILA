@@ -6,13 +6,13 @@ new = cd + '/SongClassifyList/'
 
 
 
-activitygenre = {'physical': ['metal','punk','dance and electronica'],'mental':['classic pop and rock'],'daily':['classic pop and rock','Soul and Reggae'],'hanging out':['metal','punk','soul and Reggae'],'relaxing': ['classic pop and rock'] }
+activitygenre = {'physical': ['metal','punk','dance and electronica'],'mental':['classic pop and rock'],'daily':['classic pop and rock','Soul and Reggae'],'chilling':['metal','punk','soul and Reggae'],'relaxing': ['classic pop and rock'] }
 
 moodgenre = {'angry': ['metal'],'happy':['Soul and Reggae','folk','classic pop and rock'],'sad' :['classic pop and rock'],'calm' : ['folk','classic pop and rock'] }
 
 
 os.chdir(new)
-print os.getcwd()
+#print os.getcwd()
 fa =  open('songIDActivityDict.json','r')
 fm =  open('songIDMoodDict.json','r')
 fs = open('songProperty.json','r')
@@ -23,7 +23,7 @@ activitylist = []
 trackIdActivityDict = defaultdict()
 trackIdMoodDict = defaultdict()
 songPropertyDict = defaultdict()
-
+trackDigitalIdDict = defaultdict()
 activitygenredict = defaultdict(int)
 moodgenredict = defaultdict(int)
 moodsortedlist = []
@@ -42,7 +42,11 @@ for line in fm.readlines():
 
 for line in fs.readlines():
         songPropertyDict = simplejson.loads(unicode(line),encoding="UTF-8")
-	#print songPropertyDict
+
+'''
+for key in songPropertyDict:
+	print key,songPropertyDict[key]
+'''
 
 def getActivityGenre(activity):
 	sortedlist = []
@@ -70,7 +74,7 @@ def getActivityGenre(activity):
 		
 		
 def getMoodGenre(mood):
-	print trackIdMoodDict.keys()
+	#print trackIdMoodDict.keys()
         sortedlist = []
 	if not trackIdMoodDict.has_key(mood):
 		print 'Empty Mood List'
@@ -94,22 +98,25 @@ def getMoodGenre(mood):
                         #print "==============================================="
         return sortedlist		
 
-trackScoreDict = defaultdict(float)		
 	
 os.chdir(cd)
-def main():
-
-	mood_input = 'happy'
-	activity_input = 'physical'
-	location_input = 'ohio'
+def fetchSong(mood_input,activity_input,location_input):
+	
+	trackScoreDict = defaultdict(float)
+	print "Predicted Mood     : ",mood_input
+	print "Predicted Activity : ",activity_input	
+	print "Your Location      : ",location_input
+	print"Location is choosen from following list as random for Testing Purpose"
+	print" ['ohio','california','texas','alabama','orleans']"
+	
+	#print mood_input,activity_input,location_input
 	locationlist = (location_input.lower()).split()
-
 	templist =[]
-	activitysortedlist = getActivityGenre(activity_input)
+	activitysortedlist = getActivityGenre(activity_input.lower())
 	#print activitysortedlist
 	templist.append(activitysortedlist)
 	
-	moodsortedlist = getMoodGenre(mood_input)
+	moodsortedlist = getMoodGenre(mood_input.lower())
         #print moodsortedlist
 	#print len(activitysortedlist)
 	#print len(moodsortedlist)
@@ -119,13 +126,13 @@ def main():
 
 
 	for track in result:
-		print track
+		#print track
 		if track in moodsortedlist:
 			trackScoreDict[track] = trackScoreDict[track] + 0.5
-		print trackScoreDict[track]
+		#print trackScoreDict[track]
 		if track in activitysortedlist:
                         trackScoreDict[track] = trackScoreDict[track] + 0.2
-		print trackScoreDict[track]
+		#print trackScoreDict[track]
 		trackLocation = songPropertyDict[track][0][3]
 		trackLocation = str(trackLocation[0]).split(',')
 		isfound = False
@@ -137,15 +144,27 @@ def main():
 					break
 			if isfound:
 				break
-		print trackScoreDict[track]
+		#print trackScoreDict[track]
 		hottness =songPropertyDict[track][1]
-		print hottness
+		#print hottness
 		trackScoreDict[track] = trackScoreDict[track] * hottness
-		print trackScoreDict[track]
-		print "======================================\n"
+		digital_id = songPropertyDict[track][2]
+		artist = songPropertyDict[track][0][2]
+		title = songPropertyDict[track][0][1]
+		tup = (digital_id,artist,title)
+		trackDigitalIdDict[track] = tup
+		#print trackScoreDict[track]
+		#print "======================================\n"
 	
-	for key in trackScoreDict:
-		print key,trackScoreDict[key]
+	#for key in trackScoreDict:
+		#print key,trackScoreDict[key]
+	return trackScoreDict,trackDigitalIdDict
+def main():
+
+	mood_input = 'happy'
+	activity_input = 'physical'
+	location_input = 'ohio'
+	fetchSong(mood_input,activity_input,location_input)
 	
 			
 

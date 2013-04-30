@@ -18,7 +18,7 @@ relaxing = extractwordlist.relaxing
 
 
 stopword = []
-fs = open('stopword.txt','rb')
+fs = open('en.txt','rb')
 for line in fs.readlines():
 	stopword.append(line[:-1])
 

@@ -1,10 +1,12 @@
 import sys,os,re
-
+from FileUtil import getAllFileinDir
 cd = os.getcwd()
 new = cd + '/wordlists/'
 os.chdir(new)
 
-listing  = os.listdir(new)
+#listing  = os.listdir(new)
+listing = getAllFileinDir(new)
+#print listing
 
 happy = []
 angry = []
@@ -17,80 +19,83 @@ chilling = []
 sad = []
 calm = []
 
-for file in listing:
-	if file == 'joy.txt' or 'surprise.txt':
-		f = open(file,'rb')
+
+for filePath in listing:
+	fileName = os.path.basename(filePath)
+	print "######",fileName
+	if fileName == 'joy.txt' or 'surprise.txt':
+		f = open(filePath,'rb')
 		for line in f.readlines():
 			line  = line[11:]
 			wordList = re.sub("[^\w]", " ",  line).split()
 		      	for word in wordList:
 				happy.append(word)
 
-	if file == 'disgust.txt' or 'anger.txt':
-		f = open(file,'rb')
+	if fileName == 'disgust.txt' or 'anger.txt':
+		f = open(filePath,'rb')
                 for line in f.readlines():
                         line  = line[11:]
                         wordList = re.sub("[^\w]", " ",  line).split()
                         for word in wordList:
 				angry.append(word)
 				
-	if file == 'sad.txt':
-		f = open(file,'rb')
+	if fileName == 'sad.txt':
+		f = open(filePath,'rb')
                 for line in f.readlines():
                         line  = line[11:]
                         wordList = re.sub("[^\w]", " ",  line).split()
                         for word in wordList:
 				sad.append(word)
-        if file == 'calm.txt':
-                f = open(file,'rb')
+        if fileName == 'calm.txt':
+                f = open(filePath,'rb')
                 for line in f.readlines():
 
                         wordList = re.sub("[^\w]", " ",  line).split()
                         for word in wordList:
                                 calm.append(word)
 				
-	if file == 'love.txt':
-		f = open(file,'rb')
+	if fileName == 'love.txt':
+		f = open(filePath,'rb')
                 for line in f.readlines():
                       
                         wordList = re.sub("[^\w]", " ",  line).split()
                         for word in wordList:
                                 love.append(word)
                                 
-	if file == 'physical.txt':
-		f = open(file,'rb')
+	if fileName == 'physical.txt':
+		f = open(filePath,'rb')
                 for line in f.readlines():
                    
                         wordList = re.sub("[^\w]", " ",  line).split()
                         for word in wordList:
                                 physical.append(word)
                                 
-	if file == 'mental.txt':
-		f = open(file,'rb')
+	if fileName == 'mental.txt':
+		f = open(filePath,'rb')
                 for line in f.readlines():
                       
                         wordList = re.sub("[^\w]", " ",  line).split()
                         for word in wordList:
 				mental.append(word)
 
-	if file == 'daily.txt':
-		f = open(file,'rb')
+	if fileName == 'daily.txt':
+		f = open(filePath,'rb')
                 for line in f.readlines():
                    
                         wordList = re.sub("[^\w]", " ",  line).split()
                         for word in wordList:
                                 daily.append(word)
                                 
-	if file == 'chilling.txt':
-		f = open(file,'rb')
+	if fileName == 'chilling.txt':
+		f = open(filePath,'rb')
                 for line in f.readlines():
                      
                         wordList = re.sub("[^\w]", " ",  line).split()
                         for word in wordList:
                                 chilling.append(word)
                                 
-	if file == 'relaxing.txt':
-		f = open(file,'rb')
+	if fileName == 'relaxing.txt':
+		f = open(filePath,'rb')
                 for line in f.readlines():
                        
                         wordList = re.sub("[^\w]", " ",  line).split()

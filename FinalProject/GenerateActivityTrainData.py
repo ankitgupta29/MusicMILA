@@ -1,4 +1,5 @@
 '''
+	locationlist = (location_input.lower()).split()
 Created on Apr 20, 2013
 
 @author: Atish K Patra
@@ -135,7 +136,7 @@ def mapClass2Act(actClassNum):
     if actClassNum == ACTList.ACT_MENTAL:
         actClass = "Mental Acitivity"
     elif actClassNum == ACTList.ACT_CHILLING:
-        actClass = "Hanging out "
+        actClass = "Chilling"
     elif actClassNum == ACTList.ACT_RELAX:
         actClass = "Relaxing"
     elif actClassNum == ACTList.ACT_PHYSICAL:
