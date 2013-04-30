@@ -114,7 +114,7 @@ if __name__ == '__main__':
         onegetter = sys.argv[3]
    
     loop =1
-
+    count = 1
     while loop < 1000000:
 	if loop == 100000:
 	    print "breaking from loop"
@@ -151,7 +151,7 @@ if __name__ == '__main__':
 	getters = np.sort(getters)
 
 	    # print them
-
+	digital_id = 0
 	for getter in getters:
  	    try:
 	        res = hdf5_getters.__getattribute__(getter)(h5,songidx)
@@ -171,26 +171,38 @@ if __name__ == '__main__':
 		if getter[4:] == 'track_id':
 			track_id = res
 	            #print '$$$$$$$$$$',res
+		if getter[4:] == 'track_7digitalid':
+                        digital_id = res
+			if not digital_id:
+			    digital_id = 0
+	    
+	    if digital_id:
+		#print track_id,digital_id
+		count = count +1 
+	
+
 	
 	if temptrackiddict.has_key(track_id):
 	    dictcount = dictcount + 1	
 	    if dictcount == 10000:
 		break
-
+	    
             songPropertyDict.setdefault(track_id,[]).append(temptrackiddict[track_id])	
 	    songPropertyDict.setdefault(track_id,[]).append(hottness)
-
-
-        #print track_id,songPropertyDict[track_id]
+	    songPropertyDict.setdefault(track_id,[]).append(digital_id)
+            #print songPropertyDict[track_id]
+	    
+        #print 'count of digital id is : ',count 
+	
     '''
     print dictcount,loop
     for key in songPropertyDict:
         print key,songPropertyDict[key]
     '''
-
+    print "count of digital id is : ",count 
     json.dump(songPropertyDict,open('songProperty.txt','wb'))			
-		
-		
+    
+ 		
     # done
     #print 'DONE, showed song',songidx,'/',numSongs-1,'in file:',hdf5path
     #h5.close()

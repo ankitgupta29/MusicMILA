@@ -82,6 +82,30 @@ def getURLFromH5(h5path):
             sys.exit(0)
 
 
+def getURLFrom7D(digital_id):
+    #h5 = hdf5_utils.open_h5_file_read(h5path)
+
+    track_7digitalid = digital_id
+    '''
+    release_7digitalid = GETTERS.get_release_7digitalid(h5)
+    artist_7digitalid = GETTERS.get_artist_7digitalid(h5)
+    artist_name = GETTERS.get_artist_name(h5)
+    release_name = GETTERS.get_release(h5)
+    track_name = GETTERS.get_title(h5)
+    h5.close()
+    '''
+    # we already have the 7digital track id? way too easy!
+    if track_7digitalid >= 0:
+        preview = get_preview_from_trackid(track_7digitalid)
+        if preview == '':
+            print 'something went wrong when looking by track id'
+        else:
+            print preview
+            return preview
+            sys.exit(0)
+
+
+
 def url_call(url):
     """
     Do a simple request to the 7digital API
@@ -279,7 +303,9 @@ if __name__ == '__main__':
         print 'invalid path (not a file):',h5path
         sys.exit(0)
     
-    getURLFromH5(h5path)
+    #getURLFromH5(h5path)
+    digital_id = int('3243937')
+    getURLFrom7D(digital_id)
 
     sys.exit(0)
 

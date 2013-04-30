@@ -23,7 +23,7 @@ activitylist = []
 trackIdActivityDict = defaultdict()
 trackIdMoodDict = defaultdict()
 songPropertyDict = defaultdict()
-
+trackDigitalIdDict = defaultdict()
 activitygenredict = defaultdict(int)
 moodgenredict = defaultdict(int)
 moodsortedlist = []
@@ -42,7 +42,11 @@ for line in fm.readlines():
 
 for line in fs.readlines():
         songPropertyDict = simplejson.loads(unicode(line),encoding="UTF-8")
-	#print songPropertyDict
+
+'''
+for key in songPropertyDict:
+	print key,songPropertyDict[key]
+'''
 
 def getActivityGenre(activity):
 	sortedlist = []
@@ -138,12 +142,17 @@ def fetchSong(mood_input,activity_input,location_input):
 		hottness =songPropertyDict[track][1]
 		#print hottness
 		trackScoreDict[track] = trackScoreDict[track] * hottness
+		digital_id = songPropertyDict[track][2]
+		artist = songPropertyDict[track][0][2]
+		title = songPropertyDict[track][0][1]
+		tup = (digital_id,artist,title)
+		trackDigitalIdDict[track] = tup
 		#print trackScoreDict[track]
 		#print "======================================\n"
 	
 	#for key in trackScoreDict:
 		#print key,trackScoreDict[key]
-	return trackScoreDict
+	return trackScoreDict,trackDigitalIdDict
 def main():
 
 	mood_input = 'happy'

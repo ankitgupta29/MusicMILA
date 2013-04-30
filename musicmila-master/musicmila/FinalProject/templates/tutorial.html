@@ -1,0 +1,244 @@
+$def with (form, text)
+
+<html>
+
+    <head>
+        <title>MusicMila</title>
+        <link href="/static/skin/pink.flag/jplayer.pink.flag.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script type="text/javascript" src="/static/js/jquery.jplayer.min.js"></script>
+		<script type="text/javascript" src="/static/js/jplayer.playlist.min.js"></script>
+		<script src="/static/jquery-latest.pack.js" type="text/javascript"></script>
+		<script src="/static/jcarousellite_1.0.1c4.js" type="text/javascript"></script>
+		<script src="/static/mypage.js" type="text/javascript"></script>
+        <link href="/static/style.css" rel="stylesheet" type="text/css" />
+			<link href="static/layout.css" rel="stylesheet" type="text/css" />
+			<link rel="stylesheet" href="/static/prettyPhoto.css" type="text/css">
+      <script src="js/cufon-yui.js" type="text/javascript"></script>
+		<script src="/static/js/cufon-replace.js" type="text/javascript"></script>
+				<script type="text/javascript" src="/static/js/Josefin_Sans_600.font.js"></script>
+<script type="text/javascript" src="/static/js/Lobster_400.font.js"></script>
+<script type="text/javascript" src="/static/js/sprites.js"></script>  
+ <script type="text/javascript" src="/static/js/jquery.jplayer.settings.js"></script>
+<script type="text/javascript" src="/static/js/gSlider.js"></script>
+<script type="text/javascript" src="/static/js/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="/static/js/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="/static/js/jquery.prettyPhoto.js"></script> 
+ <script type="text/javascript" src="static/json2html.js"></script>  
+<script type="text/javascript" src="static/jquery.json2html.js"></script>     
+<script type="text/javascript" src="/static/jquery.js"></script>
+        <script type="text/javascript">
+	
+			jQuery(document).ready(function() {  
+										
+									 
+                                 var myPlaylist = new jPlayerPlaylist({
+									jPlayer: "#jquery_jplayer_N",
+									cssSelectorAncestor: "#jp_container_N"
+										}, [
+											{
+												title:"Cro Magnon Man",
+												artist:"The Stark Palace",
+												mp3:"http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3",
+												poster: "http://www.jplayer.org/audio/poster/The_Stark_Palace_640x360.png"
+											}
+										], {
+											playlistOptions: {
+												enableRemoveControls: true
+											},
+											swfPath: "http://jplayer.org/latest/js",
+											supplied: "webmv, ogv, m4v, oga, mp3",
+											smoothPlayBar: true,
+											keyEnabled: true,
+											autoPlay: true,
+											audioFullScreen: true
+										});
+										jQuery("#playlist-setPlaylist-audio-mix").click(function() {
+											myPlaylist.setPlaylist([
+												{
+													title:"Cro Magnon Man",
+													artist:"The Stark Palace",
+													mp3:"http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3",
+													oga:"http://www.jplayer.org/audio/ogg/TSP-01-Cro_magnon_man.ogg",
+													poster: "http://www.jplayer.org/audio/poster/The_Stark_Palace_640x360.png"
+												}
+												]);
+												});
+										
+										jQuery("#playlist-remove").click(function() {
+													myPlaylist.remove();
+												});
+										jQuery("#playlist-shuffle").click(function() {
+													myPlaylist.shuffle();
+												});
+										jQuery("#playlist-next").click(function() {
+													myPlaylist.next();
+												});
+										jQuery("#playlist-previous").click(function() {
+													myPlaylist.previous();
+												});
+										jQuery("#playlist-play").click(function() {
+													myPlaylist.play();
+												});
+										jQuery("#playlist-pause").click(function() {
+												myPlaylist.pause();
+												});
+										jQuery("#playlist-option-autoPlay-true").click(function() {
+													myPlaylist.option("autoPlay", true);
+												});
+										jQuery("#playlist-option-autoPlay-false").click(function() {
+													myPlaylist.option("autoPlay", false);
+												});
+										jQuery("#playlist-option-displayTime-slow").click(function() {
+													myPlaylist.option("displayTime", "slow");
+												});
+function tweet_read()
+{
+alert("In tweetread")
+jQuery.getJSON("static/testsong.json", function(data) {
+
+											var items = [];
+											myPlaylist.remove();
+											jQuery.each(data, function(key, val) {
+					
+											myPlaylist.add(val);
+											});
+											});
+}
+
+									jQuery(".button").click(function() {
+                                        var input_string = $$("input#textfield").val();
+                                        jQuery.ajax({
+                                                type: "POST",
+                                                data: {textfield : input_string},
+                                                success: function(data) {
+                                                jQuery('#foo').html(data).hide().fadeIn(1500);
+                                                },
+                                                });
+                                        var t=setTimeout(tweet_read,10000)
+                                        
+										
+										
+									       	
+                                        return false;
+                                        });
+                                        }); //close of main jquery function
+        
+                        </script>
+    </head>
+    
+    <body id="page1">
+    <div id="main">
+  <header>
+	  <h1><a href="">Music Mila</a></h1>
+	 <p>Turn your tweet into music</p>
+         
+        <form class="form" method="post"> 
+        $:form.render()
+        <input class="button" type="submit" value="send"/>    
+        </form>
+ <div align="right"><span class="form">
+	  </span><a href="#" class="hs-prev"><img src="/static/prev.png" alt=""></a>
+	          <a href="#" class="hs-next"><img src="/static/next.png" alt=""></a></div></header>
+ 
+        <br><br>
+        <div class="tumbvr">
+	<div class="tumbvr-mask"></div>
+	<ul>
+	</ul>
+  </div>
+        
+        <article id="content">
+	<div class="col-1">
+	  <div class="p2">
+		<h2>Mood Flip </h2>
+		<img src="/static/col-1-img1.png" class="p1" alt=""><a href="#" class="more">Rotate Mood</a></div>
+	</div>
+	<div class="col-2"> 
+        <div id="jp_container_N" class="jp-video jp-video-270p">
+			<div class="jp-type-playlist">
+				<div id="jquery_jplayer_N" class="jp-jplayer">
+				  <p>&nbsp;</p>
+			    </div>
+				<div class="jp-gui">
+					<div class="jp-video-play">
+						<a href="javascript:;" class="jp-video-play-icon" tabindex="1">play</a>
+					</div>
+					<div class="jp-interface">
+						<div class="jp-progress">
+							<div class="jp-seek-bar">
+								<div class="jp-play-bar"></div>
+							</div>
+						</div>
+						<div class="jp-current-time"></div>
+						<div class="jp-duration"></div>
+						<div class="jp-controls-holder">
+							<ul class="jp-controls">
+								<li><a href="javascript:;" class="jp-previous" tabindex="1">previous</a></li>
+								<li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
+								<li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
+								<li><a href="javascript:;" class="jp-next" tabindex="1">next</a></li>
+								<li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
+								<li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
+								<li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
+								<li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
+							</ul>
+							<div class="jp-volume-bar">
+								<div class="jp-volume-bar-value"></div>
+							</div>
+							<ul class="jp-toggles">
+								<li><a href="javascript:;" class="jp-full-screen" tabindex="1" title="full screen">full screen</a></li>
+								<li><a href="javascript:;" class="jp-restore-screen" tabindex="1" title="restore screen">restore screen</a></li>
+								<li><a href="javascript:;" class="jp-shuffle" tabindex="1" title="shuffle">shuffle</a></li>
+								<li><a href="javascript:;" class="jp-shuffle-off" tabindex="1" title="shuffle off">shuffle off</a></li>
+								<li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
+								<li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
+							</ul>
+						</div>
+						<div class="jp-title">
+							<ul>
+								<li></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="jp-playlist">
+					<ul>
+						<!-- The method Playlist.displayPlaylist() uses this unordered list -->
+						<li></li>
+					</ul>
+				</div>
+				<div class="jp-no-solution">
+					<span>Update Required</span>
+					To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+				</div>
+			</div>
+		</div>     <div class="col-3">
+		<h2>Latest Tweet</h2>
+		<span id="foo">$text</span> 
+		<h2>Newsletter</h2>
+		<form action="" id="subscribe">
+		<fieldset>
+			<label>
+			<input type="text">
+			</label>
+			<input type="submit" value="">
+		</fieldset>
+		</form>
+		<h2>Find Me</h2>
+		<ul class="soc-ico">
+		<li><a href="#"><img src="/static/facebook.png" alt=""></a></li>
+		<li><a href="#"><img src="/static/twitter.png" alt=""></a></li>
+		<li><a href="#"><img src="/static/myspace.png" alt=""></a></li>
+		<li><a href="#"><img src="/static/linkedin.png" alt=""></a></li>
+		</ul>
+	</div>
+  </article>
+  <div class="af clear"></div>
+</div>
+<footer>
+	
+</footer>
+    </body>
+    
+</html>

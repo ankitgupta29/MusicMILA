@@ -7,9 +7,11 @@ import extractwordlist
 import operator
 
 cd = os.getcwd()
-new = cd+'/xlsfiles/'
-out  = cd + '/ActivityMoodFiles/'
+new = cd+'/TrainData/'
+out  = cd + '/TrainData/'
 
+
+print "inside file"	
 
 def fetchActivityFromTweet(row):
 	physical,mental,daily,relaxing,chilling = 0,0,0,0,0
@@ -71,7 +73,6 @@ def main():
 	listing =  os.listdir(new)
 	for files in listing:
 		print files
-		raw_input()
 		finallist = []
 		os.chdir(new)
 		if "~lock" not in files:
@@ -85,6 +86,7 @@ def main():
 			reader = csv.reader(f,quoting=csv.QUOTE_NONE)
 			for row in reader:
 				if row:
+					print "----------------"
 					activity = fetchActivityFromTweet(row)
 					if activity != 'Neutral':
 						'''
