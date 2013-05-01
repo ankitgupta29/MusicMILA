@@ -14,6 +14,115 @@ from collections import defaultdict
 #global Term Set
 termSet = set()
 actTermSet = set()
+classList = []
+
+def log2( x ):
+    return math.log( x ) / math.log( 2 )
+#Feature Selection Code
+class NewsClass:
+    def __init__(self):
+            self.className = ""
+            self.numDocs = 0
+            self.docList = []
+            self.tfDict = defaultdict(list) #this dictionary represents term : tf score 
+            self.numTerms = 0
+            self.tCondProb = defaultdict()
+            self.priorProb = 0
+            self.termDocList = defaultdict()
+            self.termMIDictL = defaultdict()
+    def addDocToClass(self,doc):
+        self.numDocs = self.numDocs+1
+        termList = [p for p in doc.lower().split() for p in re.findall(r"[\w]+",p)]
+        bfirstTime = True
+        for term in termList:
+            if term in self.termDocList and bfirstTime:
+                self.termDocList[term] = self.termDocList[term]+1
+                bfirstTime = False
+            else:
+                self.termDocList[term] = 1
+                bfirstTime = False
+                termSet.add(term) 
+            if term in self.tfDict:
+                count = self.tfDict.get(term)
+                count = count + 1
+                self.tfDict[term] = count
+                self.numTerms = self.numTerms+1
+            else:
+                self.tfDict[term] = 1
+                self.numTerms = self.numTerms+1
+                
+def findTotalDocForthisTerm(term,classList):
+    numDocs = 0
+    for eachClass in classList:
+        if term in eachClass.termDocList:
+            numDocs = numDocs+eachClass.termDocList[term]
+    #print "total Docs with the term [%s] = [%d]" %(term,numDocs) 
+    return numDocs
+def selectFeature(totalNDocs):
+    for eachClass in classList:
+        #print "For Class",eachClass.className
+        for eachTerm in eachClass.tfDict:
+            fact1= 0.0
+            fact2 = 0.0
+            fact3 = 0.0
+            fact4 = 0.0
+            print "Term %s present in %d docs" %(eachTerm,eachClass.termDocList[eachTerm])
+            print "Total terms in the class ",len(eachClass.tfDict)
+            N11 = eachClass.termDocList[eachTerm]
+            print N11,eachClass.numDocs
+            N01 = eachClass.numDocs - N11
+            N10 = findTotalDocForthisTerm(eachTerm,classList)-N11
+            N00 = totalNDocs-N10-eachClass.numDocs
+            
+            if (N11 == 0.0):
+                N11 = 1
+            if (N01==0.0):
+                N01=1.0
+            if(N10 == 0.0):
+                N10 =1.0
+            if(N00==0.0):
+                N00 = 1.0
+            print N00,N01,N11,N10
+            fact1 = (N11/totalNDocs) * log2((totalNDocs*N11)/((N11+N10)*(N11+N01)))
+            fact2 = (N01/totalNDocs) * log2((totalNDocs*N01)/((N01+N00)*(N11+N01)))
+            fact3 = (N10/totalNDocs) * log2((totalNDocs*N10)/((N11+N10)*(N10+N00)))
+            fact4 = (N00/totalNDocs) * log2((totalNDocs*N00)/((N01+N00)*(N10+N00)))
+            '''
+            if (N11 > 0.0):
+                fact1 = (N11/totalNumDocs) * log2((totalNumDocs*N11)/((N11+N10)*(N11+N01)))
+            if (N01>0.0):
+                fact2 = (N01/totalNumDocs) * log2((totalNumDocs*N01)/((N01+N00)*(N11+N01)))
+            if(N10 > 0.0):
+                fact3 = (N10/totalNumDocs) * log2((totalNumDocs*N10)/((N11+N10)*(N10+N00)))
+            if(N00 > 0.0):
+                fact4 = (N00/totalNumDocs) * log2((totalNumDocs*N00)/((N01+N00)*(N10+N00)))
+            '''
+            valMI = fact1+fact2+fact3+fact4
+            print "########MI Value is ##########",valMI
+            eachClass.termMIDictL[eachTerm] = valMI
+        print eachClass.termMIDictL
+        
+        totalTerm  = len(eachClass.termMIDictL)
+        #print totalTerm
+        tempDict = sorted(eachClass.termMIDictL.items(), key=lambda x: x[1],reverse = True)
+        #print tempDict
+        leastMICount = 0
+        bestFeatureNUm = 6000 # change this number to find out best F1 Value
+        for index,eachKey in enumerate(tempDict):     
+            #print eachClass.termMIDictL[eachKey[0]]
+            #del eachClass.termMIDictL[eachKey[0]]
+            #leastMICount = leastMICount+1
+            #if((totalTerm-leastMICount) <= bestFeatureNUm):
+            #break
+            if(index > bestFeatureNUm):
+                if eachClass.tCondProb.has_key(eachKey[0]):
+                    del eachClass.tCondProb[eachKey[0]]
+        #print len(eachClass.termMIDictL)
+        #print eachClass.termMIDictL
+    return 
+
+
+#Feature Selection Code
 class TDProp:
     TD_ID       = 1;
     TD_PLACE    = 2;
@@ -74,6 +183,13 @@ def createTFdict(doc,bTrain,stopWordList):
             termSet.add(sm)
     return tfdict
 
+
+    
+def addLDAFeatures():
+    ldaDirPath = os.getcwd()+getBasePath()+"lda"+getBasePath()
+    print ldaDirPath
+    topicList = open(ldaDirPath+"ldaTopics2.txt",'r').readlines()
+    return topicList
 def addSmileyFeatures():
     numTotalSmiley = 0
     smileyDirPath = os.getcwd()+getBasePath()+"smiley"+getBasePath()
@@ -142,22 +258,31 @@ def mapClass2Mood(moodClassNum):
     
     return moodClass    
 
-
+def updateFeatureDict(cType,doc):
+    classObj = NewsClass()
+    classObj.className = cType
+    classObj.addDocToClass(doc)
+    classList.append(classObj)
+    
 def readallTweets(path):
     filList =  os.listdir(path)
     classMoodList = []
     docList = []
+    ldaFile = open("lda_mmila_input.txt",'wb')
     for f1 in filList:
-        print f1
+        print "************ File Found*****************",f1
         reader = csv.reader(open(path+f1,'r'))
         totalRowLen = 0;
         for rIndex,row in enumerate(reader):
             #print row[TDProp.TD_TEXT] //Text
             totalRowLen = totalRowLen+1
-            #print rIndex,len(row)
+            print rIndex,len(row)
             if(rIndex > 0):
                 #print rIndex,row[TDProp.TD_ACT1] #//Mood1
+                text = row[TDProp.TD_TEXT]
+                ldaFile.write(str(rIndex)+"\t"+'X'+"\t"+text+"\n") 
                 moodType = row[TDProp.TD_MOOD1]
+                updateFeatureDict(moodType,text)
                 classMoodList.append(mapMood2Class(moodType))
                 docList.append( row[TDProp.TD_TEXT])
     return classMoodList,docList
@@ -179,7 +304,15 @@ def dumpTfFeatureList(docList,bTrain,stopWordList):
         print "Test Data Formatting is Done TOtal Terms [%s]" %(len(termSet))
 
     print "Total Documents in Corpus [%s]" %totalNumDocs
-    tfFeatureList = getFeatureVector(totalNumDocs,tfFeatureList,tfDictList)                 
+    tfFeatureList = getFeatureVector(totalNumDocs,tfFeatureList,tfDictList)
+    #add LDA feature
+    topicList = addLDAFeatures()
+    for docIndex,doc in enumerate(tfFeatureList):
+        print topicList[docIndex].split()
+        tfFeatureList[docIndex].extend(topicList[docIndex].split())
+
+        #addLDAFeatures(tfFeatureList,docIndex)
+                         
     return tfFeatureList
 
 def createTestMoodFVec(text):
@@ -203,6 +336,7 @@ def init_MoodTrain():
     '''
     
     classMoodList,docList = readallTweets(trainDPath)
+    selectFeature(len(docList))
     '''
     Create FeatureList for Mood in SVM format
     '''
@@ -220,16 +354,20 @@ def writePickle(tfFeatureList,classMoodList):
 
 def main():
     print "**** Basic SVM  Training Data Set Generation Module******" 
-    #classType = "entertainment,business,politics"
+    classType = "entertainment,business,politics"
+    stop1WordList = createStopWList()
     tfFeatureList,classMoodList = init_MoodTrain() 
     writePickle(tfFeatureList,classMoodList)
     #print tfFeatureList
-    print "~~~~~~Training Data Set Collection Done~~~~~~~~"
-    #testCMoodList,testCActList,doctestList = readallTweets(testDPath)
-    #tfFeatureTestList = dumpTfFeatureList(doctestList,False,stopWordList)
+    print "########~~~~~~Training Data Set Collection Done~~~~~~~~"
+    
+    testDPath = os.getcwd()+getBasePath()+"test"+getBasePath()
+    print "######Test Data Path",testDPath
+    testCMoodList,doctestList = readallTweets(testDPath)
+    tfFeatureTestList = dumpTfFeatureList(doctestList,False,stop1WordList)
     print "Test Data Set Feature Extraction Done"
-    #pickle.dump(tfFeatureTestList, open("SVM_test_MOOD_X_Feature_TF"+".txt","wb"))
-    #pickle.dump(testCMoodList, open("SVM_test_MOOD_X_LABELED_CLASS_TF"+".txt","wb"))
+    pickle.dump(tfFeatureTestList, open("SVM_test_MOOD_X_Feature_TF"+".txt","wb"))
+    pickle.dump(testCMoodList, open("SVM_test_MOOD_Y_ClassList"+".txt","wb"))
     #pickle.dump(testCActList, open("SVM_test_ACT_X_LABELED_CLASS_TF"+".txt","wb"))
     print "Dumping Done"
     
